@@ -485,18 +485,14 @@ class MexcRestApi(RestClient):
                 on_failed=self.on_send_order_failed
             )
             '''
-            if req.direction==Direction.LONG:
-                tp=float(req.price)*1.003
-                sl=float(req.price)*0.999
-            else:
-                tp=float(req.price)*0.997
-                sl=float(req.price)*1.001
+            tp=-1
+            sl=-1
             data = {
             'direction': DIRECTION2STR[req.direction],
             'trigger_price': float(req.price),
             'quantity': float(req.volume),
-            'take_profit_price': round(tp,2),
-            'stop_loss_price': round(sl,2)
+            'take_profit_price': tp,
+            'stop_loss_price': sl
             }
             response=requests.post(f'{rest_host}/place_stop_order', json=data)
             try:
